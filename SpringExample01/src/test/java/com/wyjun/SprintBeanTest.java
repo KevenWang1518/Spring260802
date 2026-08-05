@@ -63,5 +63,6 @@ public class SprintBeanTest {
     @Test
     void testSpringBean4() {
         System.out.println("测试Git版本控制");
+        System.out.println("测试Git版本控制-2");
     }
 }
