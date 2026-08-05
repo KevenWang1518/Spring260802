@@ -59,4 +59,9 @@ public class SprintBeanTest {
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("d:/beans.xml");
         System.out.println(applicationContext.getBean("userBean"));
     }
+
+    @Test
+    void testSpringBean4() {
+        System.out.println("测试Git版本控制");
+    }
 }
