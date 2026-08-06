@@ -66,6 +66,7 @@ public class SprintBeanTest {
         System.out.println("测试Git版本控制-2");
         System.out.println("测试Git版本控制-3-master");
         System.out.println("测试Git版本控制-3-hotfix");
-        System.out.println("测试Git版本控制-4-sync");
+        System.out.println("测试Git版本控制-4-home sync");
+        System.out.println("测试Git版本控制-5-office sync");
     }
 }
