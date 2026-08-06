@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--controller对象创建-->
+    <bean id="userControllerBean" class="com.wyjun.bean.controller.UserController">
+        <!--这就是set注入，底层实现原理，通过反射机制调用setter方法-->
+        <!--属性名:userService，拼接一个方法名:setUserService-->
+        <!--setter方法执行时需要一个参数，通过ref属性来提供这个参数-->
+        <property name="userService" ref="userServiceBean"></property>
+    </bean>
+
+    <!--service对象创建-->
+    <bean id="userServiceBean" class="com.wyjun.bean.service.UserServiceImpl">
+        <property name="userDao" ref="userDaoBean"></property>
+    </bean>
+
+    <!--dao对象创建-->
+    <bean id="userDaoBean" class="com.wyjun.bean.dao.UserDaoImpl"></bean>
+</beans>
