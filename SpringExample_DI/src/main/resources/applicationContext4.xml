@@ -3,21 +3,40 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!--构造注入-->
+    <!--构造注入，支持多个参数-->
 
-    <!--controller对象创建-->
+    <!--controller对象创建，可以用index-->
+    <!--index是构造方法参数的下标-->
     <bean id="orderControllerBean" class="com.wyjun.bean.controller.OrderController2">
         <constructor-arg index="0" ref="orderServiceBean"></constructor-arg>
         <constructor-arg index="1" ref="userServiceBean"></constructor-arg>
     </bean>
 
+    <!--controller对象创建，除了用index，name参数名字也可以-->
+    <!--name是构造方法参数的名字。-->
+    <!--<bean id="orderControllerBean" class="com.wyjun.bean.controller.OrderController2">
+        <constructor-arg name="orderService" ref="orderServiceBean"></constructor-arg>
+        <constructor-arg name="userService" ref="userServiceBean"></constructor-arg>
+    </bean>-->
+
     <!--service对象创建-->
     <bean id="orderServiceBean" class="com.wyjun.bean.service.OrderServiceImpl">
+        <!--进行注入的相关配置，让两个对象拉手(产生关系)-->
         <constructor-arg index="0" ref="orderDaoBean"></constructor-arg>
     </bean>
 
     <bean id="userServiceBean" class="com.wyjun.bean.service.UserServiceImpl">
         <property name="userDao" ref="userDaoBean"></property>
+        <!--进行注入的相关配置，让两个对象拉手(产生关系)-->
+        <!--底层原理是:spring框架在启动的时候会自动解析 applicationContext.xml文件-->
+        <!--解析的时候能够获取到 property name 是 userDao-->
+        <!--拿着 userDao 生成了 setter 方法的名字:setUserDao-->
+        <!--通过反射机制调用 setUserDao 方法来给 userDao 属性赋值。-->
+
+        <!--这种方式不是使用ref 属性，而是在property标签中添加一个ref子标签。这种方式也可以，和上面一样。-->
+        <!--<property name="userDao">
+            <ref bean="userDaoBean"/>
+        </property>-->
     </bean>
 
     <!--dao对象创建-->

@@ -55,14 +55,11 @@ public class SpringDITest {
         orderController2.save();
     }
     //Controller save order begin
-
     //订单开始保存
     //保存订单...
     //订单保存成功
-
     //UserService save method begin
     //插入用户信息1...
     //UserService save method end
-
     //Controller save order end
 }
