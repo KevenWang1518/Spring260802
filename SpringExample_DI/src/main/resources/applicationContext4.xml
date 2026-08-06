@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--构造注入-->
+
+    <!--controller对象创建-->
+    <bean id="orderControllerBean" class="com.wyjun.bean.controller.OrderController2">
+        <constructor-arg index="0" ref="orderServiceBean"></constructor-arg>
+        <constructor-arg index="1" ref="userServiceBean"></constructor-arg>
+    </bean>
+
+    <!--service对象创建-->
+    <bean id="orderServiceBean" class="com.wyjun.bean.service.OrderServiceImpl">
+        <constructor-arg index="0" ref="orderDaoBean"></constructor-arg>
+    </bean>
+
+    <bean id="userServiceBean" class="com.wyjun.bean.service.UserServiceImpl">
+        <property name="userDao" ref="userDaoBean"></property>
+    </bean>
+
+    <!--dao对象创建-->
+    <bean id="orderDaoBean" class="com.wyjun.bean.dao.OrderDaoImpl"></bean>
+    <bean id="userDaoBean" class="com.wyjun.bean.dao.UserDaoImpl"></bean>
+
+</beans>
