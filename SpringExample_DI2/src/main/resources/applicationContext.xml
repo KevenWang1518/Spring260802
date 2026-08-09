@@ -4,9 +4,128 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
     <!--set注入 简单变量int-->
-<bean id="userBean" class="com.wyjun.bean.entity.User">
-    <!--类型自动转换，底层spring已经完成了String和int的转换。-->
-    <property name="age" value="20"></property>
-</bean>
+    <bean id="userBean" class="com.wyjun.bean.entity.User">
+        <!--类型自动转换，底层spring已经完成了String和int的转换。-->
+        <property name="age" value="20"></property>
+    </bean>
 
+    <!--配置自己编写的连接池。-->
+    <bean id="myPool" class="com.wyjun.bean.entity.MyPool">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/spring"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="20"/>
+    </bean>
+
+    <!--程序员在这里配置Bean的过程就是手动装配的过程。-->
+    <!--这是普通的写法-->
+    <bean id="student1" class="com.wyjun.bean.entity.Student">
+        <property name="name" value="张三"></property>
+        <property name="clazz" ref="clazz1"></property>
+    </bean>
+    <bean id="clazz1" class="com.wyjun.bean.entity.Clazz">
+        <property name="name" value="高三一班"></property>
+    </bean>
+
+    <!--这种方式叫做级联属性赋值-->
+    <bean id="clazz2" class="com.wyjun.bean.entity.Clazz"></bean>
+    <bean id="student2" class="com.wyjun.bean.entity.Student">
+        <property name="name" value="李四"></property>
+        <property name="clazz" ref="clazz2"></property>
+        <property name="clazz.name" value="高三二班"></property>
+    </bean>
+
+    <!--数组注入-->
+    <bean id="person" class="com.wyjun.bean.entity.Person">
+        <property name="hobbies">
+            <array>
+                <value>运动</value>
+                <value>旅游</value>
+                <value>聊天</value>
+            </array>
+        </property>
+    </bean>
+
+    <!--数组注入-->
+    <!--准备多个商品对象-->
+    <bean id="good1" class="com.wyjun.bean.entity.Goods">
+        <property name="name" value="苹果"></property>
+    </bean>
+    <bean id="good2" class="com.wyjun.bean.entity.Goods">
+        <property name="name" value="香蕉"></property>
+    </bean>
+    <bean id="good3" class="com.wyjun.bean.entity.Goods">
+        <property name="name" value="桔子"></property>
+    </bean>
+
+    <!--准备一个订单对象，包含多个商品对象-->
+    <bean id="order" class="com.wyjun.bean.entity.Order">
+        <property name="goodsArray">
+            <array>
+                <ref bean="good1"></ref>
+                <ref bean="good2"></ref>
+                <ref bean="good3"></ref>
+            </array>
+        </property>
+    </bean>
+
+    <!--注入List集合，有序可重复-->
+    <bean id="customer" class="com.wyjun.bean.entity.Customer">
+        <property name="names">
+            <list>
+                <!--List集合中简单类型，因此使用 value 标签。非简单类型使用ref标签。-->
+                <value>张三</value>
+                <value>张三哥</value>
+                <value>三哥</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="people" class="com.wyjun.bean.entity.People">
+        <property name="phones">
+            <set>
+                <!--注入set集合，无序不可重复，自动去重-->
+                <value>13333333333</value>
+                <value>13999999999</value>
+                <value>136666666666</value>
+            </set>
+        </property>
+        <property name="addresses">
+            <map>
+                <!--当key和value不是简单类型时使用。-->
+                <!--<entry key-ref="" value-ref=""></entry>-->
+
+                <!--当key和value都是简单类型时使用。-->
+                <entry key="1" value="平安路123号"></entry>
+                <entry key="2" value="健康路567号"></entry>
+                <entry key="3" value="人民路678号"></entry>
+                <entry key="4" value="中华路789号"></entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="sex">man</prop>
+                <prop key="married">true</prop>
+                <prop key="work">enginer</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="vip" class="com.wyjun.bean.entity.Vip">
+        <!--注入空字符串第一种方式-->
+        <!--<property name="name" value=""/>-->
+
+        <!--注入空字符串第二种方式-->
+        <property name="name">
+            <value/>
+        </property>
+
+        <!--注入nuLl的第一种方式:什么不写，压根不给属性赋值。-->
+
+        <!--注入null的第二种方式:null标签。-->
+        <property name="email"><null></null>
+        </property>
+    </bean>
 </beans>
