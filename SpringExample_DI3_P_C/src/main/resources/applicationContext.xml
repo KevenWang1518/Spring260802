@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--使用p命名空间简化配置-->
+    <bean id="user" class="com.wyjun.bean.entity.User" p:name="ZhangSan" p:age="20"></bean>
+
+    <!--使用c命名空间简化配置-->
+    <bean id="myDate" class="com.wyjun.bean.entity.MyDate" c:_0="2026" c:_1="08" c:_2="10"></bean>
+    <!--注意这种形式，顺序可能混乱<bean id="myDate" class="com.wyjun.bean.entity.MyDate" c:year="2026" c:month="08" c:day="10"></bean>-->
+
+    <!--使用util命名空间简化配置-->
+    <!--定义一个公共的属性配置-->
+    <util:properties id="dataSourceProp">
+        <prop key="driver">com.mysql.cj.jdbc.Driver</prop>
+        <prop key="url">jdbc:mysql://localhost:3306/wyjun</prop>
+        <prop key="username">root</prop>
+        <prop key="password">123456</prop>
+    </util:properties>
+
+    <bean id="dataSource1" class="com.wyjun.bean.entity.MyDataSource1">
+        <!--注入公共的属性配置-->
+        <property name="properties" ref="dataSourceProp"/>
+    </bean>
+
+    <bean id="dataSource2" class="com.wyjun.bean.entity.MyDataSource2">
+        <!--注入公共的属性配置-->
+        <property name="properties" ref="dataSourceProp"/>
+    </bean>
+
+    <!--这是之前的手动装配-->
+    <!--<bean id="accountDao" class="com.wyjun.bean.dao.AccountDao"></bean>
+    <bean id="accountService" class="com.wyjun.bean.service.AccountService">
+        <property name="accountDao" ref="accountDao"></property>
+    </bean>-->
+
+    <!--根据name名称进行自动装配:自动化注入。根据名字可以自动查找。-->
+    <!--启用自动装配的前提是:必须给bean标签配置 autowire 属性。-->
+    <bean id="accountDao" class="com.wyjun.bean.dao.AccountDao"></bean>
+    <bean id="accountService" class="com.wyjun.bean.service.AccountService" autowire="byName">
+    </bean>
+
+    <!--根据type类型进行自动装配:自动化注入。根据类型可以自动查找。-->
+    <!--注意：根据类型进行装配的时候，同一个类型的实例只能有一个，不能有多个同一类型的实例。-->
+    <bean class="com.wyjun.bean.dao.ProductDao"></bean>
+    <bean id="productService" class="com.wyjun.bean.service.ProductService" autowire="byType"></bean>
+</beans>
