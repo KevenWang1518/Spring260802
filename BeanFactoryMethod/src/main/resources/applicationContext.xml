@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--需要指定简单工厂模式中的工厂类。以及静态方法的方法名。-->
+    <bean id="starBean" class="com.wyjun.bean.StarFactory" factory-method="getStar"></bean>
+
+    <!--使用工厂方法模式实例化bean-->
+    <!--将具体工厂纳入IoC容器的管理。-->
+    <!--因为factory中的getOrder方法不是static方法，不能直接用类名调用。-->
+    <!--需要先实例化出来factory，再调用factory.getOrder方法返回orderBean。-->
+    <bean id="orderFactory" class="com.wyjun.bean.OrderFactory"></bean>
+    <!--FactoryBean是干啥的?FactoryBean本身就是一个Bean，本身已经纳入IoC容器的管理了。-->
+    <!--FactoryBean的作用:协助Spring框架完成bean的实例化。-->
+    <bean id="orderBean" factory-bean="orderFactory" factory-method="getOrder"></bean>
+    <!--BeanFactory是一个Bean吗?不是。这是一个负责创建Bean的工厂类。-->
+
+
+    <!--直接指定一个FactoryBean类即可。不需要手动设置factory-bean属性，以及factory-method属性。-->
+    <bean id="personBean" class="com.wyjun.bean.PersonFactoryBean"></bean>
+
+
+    <!--使用自定义的FactoryBean来辅助实例化bean对象-->
+    <!--实例化birthday的时候，顺带把字符串格式化为日期格式-->
+    <bean id="birthdayBean" class="com.wyjun.bean.DateFactoryBean">
+        <constructor-arg index="0" value="2001-10-01"/>
+    </bean>
+
+    <bean id="userBean" class="com.wyjun.bean.User">
+        <!--错误：<property name="birthday" value="2001-10-01"></property>-->
+        <!--Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'birthday'-->
+        <property name="birthday" ref="birthdayBean"></property>
+    </bean>
+</beans>

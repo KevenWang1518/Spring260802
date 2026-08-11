@@ -3,9 +3,11 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+                           http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context  https://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--使用p命名空间简化配置-->
     <bean id="user" class="com.wyjun.bean.entity.User" p:name="ZhangSan" p:age="20"></bean>
@@ -49,4 +51,40 @@
     <!--注意：根据类型进行装配的时候，同一个类型的实例只能有一个，不能有多个同一类型的实例。-->
     <bean class="com.wyjun.bean.dao.ProductDao"></bean>
     <bean id="productService" class="com.wyjun.bean.service.ProductService" autowire="byType"></bean>
+
+    <!--使用context标签的时候，需要引入context命名空间。-->
+    <!--引入外部独立的属性配置文件-->
+    <!--Location属性是从类的根路径下开始加载文件。-->
+    <!-- 加载外部属性文件，禁止优先读取系统环境变量 -->
+    <context:property-placeholder location="jdbc.properties" system-properties-mode="NEVER"/>
+
+    <!--## 问题根源（经典 Spring 踩坑点）
+            Windows 系统自带环境变量 **USERNAME=Administrator**
+            Spring 解析 `${username}` 时，**优先查找系统环境变量 > 你的 properties 文件**
+            所以直接读到了系统用户名，没有读取 `jdbc.properties` 里写的 `username=root`。
+        ## 原理
+            `<context:property-placeholder/>` 默认策略：
+            `system-properties-mode="ENVIRONMENT"`
+            Spring 会先去系统环境变量 / JVM 系统属性查找 key，找到就直接使用，不再去 properties 文件里读取。
+        ## 解决
+            修改 property-placeholder 配置，降低系统变量优先级
+            加载外部属性文件，禁止优先读取系统环境变量
+            <context:property-placeholder location="jdbc.properties" system-properties-mode="NEVER"/>
+    -->
+
+    <!--配置Bean-->
+    <!--${这里是属性配置文件中的key}-->
+    <bean id="myDataSource" class="com.wyjun.bean.entity.MyDataSource">
+        <property name="driver" value="${db.driver}"></property>
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.username}"></property>
+        <property name="password" value="${db.password}"></property>
+    </bean>
+
+    <!--默认情况下Spring Bean是单例的。也就是说默认情况下:scope属性的值是:singleton-->
+    <!--如果要使用多例，必须将scope属性的值设置为:prototype-->
+    <bean id="springBean1" class="com.wyjun.bean.entity.SpringBean" scope="singleton"></bean>
+
+    <!--这样写是多例的。-->
+    <bean id="springBean2" class="com.wyjun.bean.entity.SpringBean" scope="prototype"></bean>
 </beans>
