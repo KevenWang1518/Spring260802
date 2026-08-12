@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+      init-method属性指定初始化方法。
+      destroy-method属性指定销毁方法。
+    -->
+    <bean id="userBean" class="com.wyjun.bean.entity.User" init-method="initBean" destroy-method="destroyBean">
+        <!--给bean属性赋值-->
+        <property name="name" value="ZhangSan"></property>
+    </bean>
+</beans>
