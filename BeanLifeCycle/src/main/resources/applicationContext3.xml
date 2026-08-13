@@ -7,9 +7,13 @@
       init-method属性指定初始化方法。
       destroy-method属性指定销毁方法。
     -->
-    <bean id="userBean" class="com.wyjun.bean.entity.User" init-method="initBean" destroy-method="destroyBean">
+    <bean id="userBean" class="com.wyjun.bean.entity.User2" init-method="initBean" destroy-method="destroyBean">
         <!--给bean属性赋值-->
         <property name="name" value="ZhangSan"></property>
     </bean>
 
+    <!--配置Bean后处理器。-->
+    <!--一定要注意：在spring.xml文件中配置的Bean后处理器将作用于当前配置文件中所有的Bean。-->
+    <!--这个文件中，有多少Bean就作用于多少Bean。-->
+    <bean class="com.wyjun.bean.entity.LogBeanPostProcessor"/>
 </beans>

@@ -12,4 +12,8 @@
         <property name="name" value="ZhangSan"></property>
     </bean>
 
+    <!--配置Bean后处理器。-->
+    <!--一定要注意：在spring.xml文件中配置的Bean后处理器将作用于当前配置文件中所有的Bean。-->
+    <!--这个文件中，有多少Bean就作用于多少Bean。-->
+    <bean class="com.wyjun.bean.entity.LogBeanPostProcessor"/>
 </beans>
