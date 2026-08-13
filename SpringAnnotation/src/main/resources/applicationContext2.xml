@@ -9,9 +9,11 @@
                            http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
                            http://www.springframework.org/schema/context  https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--指定spring框架需要扫描的包。-->
-    <!--<context:component-scan base-package="com.wyjun.bean.user,com.wyjun.bean.order"></context:component-scan>-->
-    <!--或者不分开写包名，写共同的父包名也可以-->
-    <context:component-scan base-package="com.wyjun.bean"></context:component-scan>
+    <!--use-default-filters="false" false表示:不采用spring默认的实例化规则。-->
+    <!--这个时候带有 @Component @Controller @Service @Repository注解的类都不再参与实例化了。-->
+    <context:component-scan base-package="com.wyjun.bean" use-default-filters="false">
+        <!--你想让谁参与实例化，则给它包含进来。以下配置表示只有 @Controller注解的参与实例化。-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
 </beans>

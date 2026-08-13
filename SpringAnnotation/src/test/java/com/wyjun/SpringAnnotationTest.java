@@ -32,4 +32,19 @@ public class SpringAnnotationTest {
         OrderController orderController = applicationContext.getBean("orderController", OrderController.class);
         System.out.println(orderController);
     }//com.wyjun.bean.order.OrderController@2552f2cb
+
+    @Test
+    void springAnnotationTest3() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext2.xml");
+    }/*
+        B的无参数构造方法执行
+        E的无参数构造方法执行
+        F的无参数构造方法执行
+    */
+
+    @Test
+    void springAnnotationTest4() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext3.xml");
+    }//A的无参数构造方法执行
+
 }
