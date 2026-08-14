@@ -1,5 +1,7 @@
 package com.wyjun;
 
+import com.wyjun.bean.beans.MyUser;
+import com.wyjun.bean.beans.MyUser2;
 import com.wyjun.bean.order.OrderController;
 import com.wyjun.bean.user.UserController;
 import com.wyjun.bean.user.UserDao;
@@ -9,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringAnnotationTest {
     @Test
-    void springAnnotationTest1() {
+    void springAnnotationTest0() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         UserDao userDaoBean = applicationContext.getBean("userDao", UserDao.class);
@@ -24,6 +26,14 @@ public class SpringAnnotationTest {
         com.wyjun.bean.user.UserService@2b58f754
         com.wyjun.bean.user.UserController@3ebff828
     */
+
+    @Test
+    void springAnnotationTest1() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        UserController userControllerBean = applicationContext.getBean("userController", UserController.class);
+        userControllerBean.saveUser();
+    }//保存用户信息
 
     @Test
     void springAnnotationTest2() {
@@ -47,4 +57,27 @@ public class SpringAnnotationTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext3.xml");
     }//A的无参数构造方法执行
 
+    @Test
+    void springAnnotationTest5() {//属性和方法上使用@value赋值
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        MyUser myUser = applicationContext.getBean("myUser", MyUser.class);
+        System.out.println(myUser);
+    }/*
+        setName方法执行了
+        setAge方法执行了
+        MyUser{name='Zhangsan', age=20}
+    */
+
+    @Test
+    void springAnnotationTest6() {//构造方法上直接使用@value赋值
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        MyUser2 myUser2 = applicationContext.getBean("myUser2", MyUser2.class);
+        System.out.println(myUser2);
+    }/*
+        setName方法执行了
+        setAge方法执行了
+        MyUser{name='Lisi', age=30}
+    */
 }
