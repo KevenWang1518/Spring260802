@@ -3,6 +3,7 @@ package com.wyjun;
 import com.wyjun.bean.user.UserController;
 import com.wyjun.bean.user.UserDao;
 import com.wyjun.bean.user.UserService;
+import com.wyjun.bean.user2.UserService2;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,4 +41,14 @@ public class SpringAnnotationTest {
         userControllerBean.saveUser();
     }//保存用户信息到MySQL数据库
 
+    @Test
+    void springAnnotationTest4() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        UserService2 userService2 = applicationContext.getBean("userService2", UserService2.class);
+        userService2.saveUser();
+    }/*
+        userService:保存用户信息中
+        userDao:插入用户信息到数据库
+     */
 }
