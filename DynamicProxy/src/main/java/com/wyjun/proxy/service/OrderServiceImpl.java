@@ -1,9 +1,6 @@
-package com.wyjun.proxy.service4;
+package com.wyjun.proxy.service;
 
-import org.springframework.stereotype.Component;
-
-@Component()
-public class OrderServiceImpl4 implements OrderService4 {
+public class OrderServiceImpl implements OrderService {
     @Override
     public void generate() {
         try {

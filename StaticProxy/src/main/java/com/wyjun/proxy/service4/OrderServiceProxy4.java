@@ -17,7 +17,7 @@ public class OrderServiceProxy4 implements OrderService4 {
     @Override
     public void generate() {
         long startTime = System.currentTimeMillis();
-        target.generate();
+        target.generate();//核心方法
         long endTime = System.currentTimeMillis();
         System.out.println("generate()操作耗时 = " + (endTime - startTime));
     }
@@ -25,7 +25,7 @@ public class OrderServiceProxy4 implements OrderService4 {
     @Override
     public void detail() {
         long startTime = System.currentTimeMillis();
-        target.detail();
+        target.detail();//核心方法
         long endTime = System.currentTimeMillis();
         System.out.println("detail()操作耗时 = " + (endTime - startTime));
     }
@@ -33,7 +33,7 @@ public class OrderServiceProxy4 implements OrderService4 {
     @Override
     public void modify() {
         long startTime = System.currentTimeMillis();
-        target.modify();
+        target.modify();//核心方法
         long endTime = System.currentTimeMillis();
         System.out.println("modify()操作耗时 = " + (endTime - startTime));
     }
