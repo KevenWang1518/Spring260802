@@ -34,7 +34,7 @@ public class ProxyTest {
                 在代理对象执行代理方法的时候，注册在调用处理器中的invoke方法会被自动调用。
        */
 
-        //OrderService proxy =(OrderService)Proxy.newProxyInstance(类加载器，要实现的接口,调用处理器);
+        //OrderService proxy = (OrderService)Proxy.newProxyInstance(类加载器，要实现的接口,调用处理器);
         //这一步功能:注册调用处理器。
         OrderService proxy = (OrderService) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), new TimerInvocationHandler(target));
 
