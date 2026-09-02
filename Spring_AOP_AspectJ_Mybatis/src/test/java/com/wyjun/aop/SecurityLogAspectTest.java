@@ -1,8 +1,6 @@
 package com.wyjun.aop;
 
 import com.wyjun.config.SpringConfig;
-import com.wyjun.service.ProductService;
-import com.wyjun.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
