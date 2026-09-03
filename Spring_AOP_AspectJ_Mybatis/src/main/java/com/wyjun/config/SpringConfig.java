@@ -132,6 +132,8 @@ public class SpringConfig {
     //配置事务管理器。(注意:只有这个配置是不行的，你需要开启事务注解，这样 @Transactional才可以使用。因此需要再配置一个开关)
     @Bean
     public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
+        //DataSourceTransactionManager 是单机事务。不支持分布式事务管理。
+        //支持分布式事务管理的事务管理器spring也实现了:JtaTransactionManager
         DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
         dataSourceTransactionManager.setDataSource(dataSource);
         return dataSourceTransactionManager;
