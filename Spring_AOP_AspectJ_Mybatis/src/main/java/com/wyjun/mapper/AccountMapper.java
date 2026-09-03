@@ -9,7 +9,7 @@ public interface AccountMapper {
      * @param actNo 账号
      * @return 账户信息
      */
-    Account selectByActNo(String actNo);
+    Account selectAccountByActNo(String actNo);
 
 
     /**
@@ -18,5 +18,5 @@ public interface AccountMapper {
      * @param account 账户对象
      * @return 1表示更新成功，其他值表示失败
      */
-    int updateBalanceByActNo(Account account);
+    int updateBalanceByAccount(Account account);
 }
