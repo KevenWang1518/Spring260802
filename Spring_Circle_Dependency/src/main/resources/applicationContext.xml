@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context  https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--setter注入：先 new 出空对象（实例化）放入缓存，再 setter 赋值；
+        构造器注入：new 对象和赋值是同一步，对象还没生成就要依赖对方，无解。
+
+        Spring中两种注入的区别
+
+            1）Setter注入（p命名空间/@Autowired set方法）
+
+            强制要求类要有无参构造函数
+            Spring流程：先调用无参构造new对象→再调用setter赋值。
+
+            -如果只写了有参构造，删掉了无参构造→setter注入直接报错，无法创建bean。
+
+            2）构造器注入（c命名空间/@Autowired写在构造方法上）
+
+            不需要无参构造！直接调用你手写的有参构造完成对象创建
+            Spring流程：直接调用你写好的有参构造，把参数传进去，一步完成对象实例+赋值。
+
+        <>写了构造函数，构造器注入完全正常工作，这就是构造器注入本来的用法。
+    -->
+
+    <!--使用p命名空间简化配置-->
+    <bean id="husbandBean1" class="com.wyjun.entity.Husband" p:name="ZhangSan" p:wife-ref="wifeBean1"></bean>
+    <bean id="wifeBean1" class="com.wyjun.entity.Wife" p:name="Lucy" p:husband-ref="husbandBean1"></bean>
+
+    <!--使用c命名空间简化配置-->
+    <bean id="husbandBean2" class="com.wyjun.entity.Husband" p:name="ZhangSan" p:wife-ref="wifeBean2"></bean>
+    <bean id="wifeBean2" class="com.wyjun.entity.Wife" c:_0="Lucy" c:_1-ref="husbandBean2"></bean>
+
+    <!--使用常规方式配置-->
+    <!--set注入：new对象 + 属性赋值，是分2步来做的，对象先提前暴露出来。-->
+    <!--set注入 + 两个都是singleton，这种模式下的循环依赖没有问题!-->
+    <bean id="husbandBean3" class="com.wyjun.entity.Husband" scope="singleton">
+        <property name="name" value="ZhangSan"></property>
+        <property name="wife" ref="wifeBean3"></property>
+    </bean>
+    <bean id="wifeBean3" class="com.wyjun.entity.Wife" scope="singleton">
+        <property name="name" value="Lucy"></property>
+        <property name="husband" ref="husbandBean3"></property>
+    </bean>
+
+
+    <!--使用常规方式配置-->
+    <!--set注入 + 两个都是prototype（懒加载），不会放到公共缓存中。
+        这种模式下的循环依赖有循环依赖问题：Is there an unresolvable circular reference or an asynchronous initialization dependency?-->
+    <bean id="husbandBean4" class="com.wyjun.entity.Husband" scope="prototype">
+        <property name="name" value="ZhangSan"></property>
+        <property name="wife" ref="wifeBean4"></property>
+    </bean>
+    <bean id="wifeBean4" class="com.wyjun.entity.Wife" scope="prototype">
+        <property name="name" value="Lucy"></property>
+        <property name="husband" ref="husbandBean4"></property>
+    </bean>
+
+    <!--使用常规方式配置-->
+    <!--set注入 + 单个singleton，这种模式下的循环依赖没有问题-->
+    <bean id="husbandBean5" class="com.wyjun.entity.Husband" scope="singleton">
+        <property name="name" value="ZhangSan"></property>
+        <property name="wife" ref="wifeBean5"></property>
+    </bean>
+    <bean id="wifeBean5" class="com.wyjun.entity.Wife" scope="prototype">
+        <property name="name" value="Lucy"></property>
+        <property name="husband" ref="husbandBean5"></property>
+    </bean>
+
+    <!--构造注入：new对象 + 属性赋值，是1步完成的，不可分割的，不能分2步走，不会提前暴露对象。-->
+    <!--singleton + 构造注入循环依赖有问题!即使都是singleton也有问题!-->
+    <!--构造方法的最大特点：new对象和属性赋值，一气呵成，不可分步执行!对象创建不完成，永远都无法暴露到公共缓存!-->
+    <!--比如Cat cat = new Cat()，右边构造方法的方法体没执行完，代表new没有结束，就不会向左边的cat对象赋值，内存地址不会返回给cat引用。-->
+    <!--因为构造方法注入会导致实例化对象的过程和对象属性赋值的过程没有分离开，必须在一起完成导致的。-->
+    <bean id="husbandBean6" class="com.wyjun.entity.Husband" scope="singleton">
+        <constructor-arg name="name" value="ZhangSan"></constructor-arg>
+        <constructor-arg name="wife" ref="wifeBean6"></constructor-arg>
+    </bean>
+    <bean id="wifeBean6" class="com.wyjun.entity.Wife" scope="singleton">
+        <constructor-arg name="name" value="Lucy"></constructor-arg>
+        <constructor-arg name="husband" ref="husbandBean6"></constructor-arg>
+    </bean>
+
+    <!--为什么Spring建议使用构造器注入?因为它在启动时可以快速发现循环依赖。-->
+</beans>
